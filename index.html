@@ -67,6 +67,11 @@
         .whatsapp-btn { display: block; width: 100%; background-color: #25D366; color: white; text-align: center; padding: 15px; text-decoration: none; font-weight: bold; border-radius: 5px; margin-top: 15px; font-size: 1.1rem; }
         .close-modal { float: right; cursor: pointer; font-size: 1.5rem; }
 
+        /* Estilos para borrar items */
+        .item-left { display: flex; align-items: center; gap: 10px; }
+        .delete-btn { cursor: pointer; color: #e74c3c; font-weight: bold; font-size: 1.2rem; padding: 0 5px; }
+        .delete-btn:hover { background-color: #ffebee; border-radius: 50%; }
+
     </style>
 </head>
 <body>
@@ -278,6 +283,14 @@
         document.getElementById('cartCount').innerText = cart.length;
     }
 
+    // Función para borrar un solo libro
+    function removeFromCart(index) {
+        cart.splice(index, 1);
+        updateCartUI();
+        openCart();
+    }
+
+    // Función del Carrito actualizada
     function openCart() {
         const modal = document.getElementById('cartModal');
         const itemsDiv = document.getElementById('cartItems');
@@ -294,7 +307,10 @@
                 total += item.price;
                 itemsDiv.innerHTML += `
                     <div class="cart-item">
-                        <span>${item.title}</span>
+                        <div class="item-left">
+                            <span class="delete-btn" onclick="removeFromCart(${index})" title="Eliminar">❌</span>
+                            <span>${item.title}</span>
+                        </div>
                         <span>$${item.price.toLocaleString('es-CO')}</span>
                     </div>
                 `;
