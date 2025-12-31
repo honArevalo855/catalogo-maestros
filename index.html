@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo TSL 2025 - Libros de Luz</title>
+    <style>
+        :root {
+            --primary: #6a1b9a; /* Violeta */
+            --secondary: #f3e5f5;
+            --accent: #ffd700; /* Dorado */
+            --text: #333;
+            --white: #ffffff;
+        }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; background-color: #f9f9f9; color: var(--text); }
+        
+        /* Header */
+        header { background: linear-gradient(135deg, var(--primary), #4a148c); color: var(--white); padding: 2rem 1rem; text-align: center; }
+        header h1 { margin: 0; font-size: 2.5rem; }
+        header p { margin-top: 10px; font-size: 1.2rem; opacity: 0.9; }
+
+        /* Filtros */
+        .controls { padding: 1rem; background: var(--white); box-shadow: 0 2px 5px rgba(0,0,0,0.1); display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; position: sticky; top: 0; z-index: 100; }
+        select, input { padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem; }
+        button.cart-btn { background-color: #25D366; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; }
+
+        /* Grid de Libros */
+        .container { max-width: 1200px; margin: 2rem auto; padding: 0 1rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2rem; }
+        
+        .book-card { background: var(--white); border-radius: 10px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.1); transition: transform 0.3s; display: flex; flex-direction: column; }
+        .book-card:hover { transform: translateY(-5px); }
+        .book-header { background-color: var(--secondary); padding: 1rem; text-align: center; font-weight: bold; color: var(--primary); }
+        .book-body { padding: 1.5rem; flex-grow: 1; }
+        .book-title { font-size: 1.2rem; margin: 0 0 10px 0; color: #2c3e50; }
+        .book-author { color: #7f8c8d; font-size: 0.9rem; font-style: italic; margin-bottom: 10px; display: block; }
+        .book-desc { font-size: 0.9rem; color: #555; line-height: 1.4; }
+        .book-footer { padding: 1rem; border-top: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; background: #fafafa; }
+        .price { font-size: 1.2rem; font-weight: bold; color: var(--primary); }
+        
+        .add-btn { background-color: var(--primary); color: white; border: none; padding: 8px 15px; border-radius: 20px; cursor: pointer; transition: background 0.3s; }
+        .add-btn:hover { background-color: #4a148c; }
+
+        /* Footer Info */
+        .info-section { background: #333; color: white; padding: 2rem; text-align: center; margin-top: 2rem; }
+        .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; max-width: 1000px; margin: 0 auto; text-align: left; }
+        .highlight { color: var(--accent); font-weight: bold; }
+
+        /* Modal Carrito */
+        #cartModal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; }
+        .modal-content { background: white; padding: 2rem; border-radius: 10px; width: 90%; max-width: 500px; max-height: 80vh; overflow-y: auto; }
+        .cart-item { display: flex; justify-content: space-between; margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 5px; }
+        .total { font-size: 1.5rem; font-weight: bold; text-align: right; margin-top: 1rem; color: var(--primary); }
+        .whatsapp-btn { display: block; width: 100%; background-color: #25D366; color: white; text-align: center; padding: 15px; text-decoration: none; font-weight: bold; border-radius: 5px; margin-top: 15px; font-size: 1.1rem; }
+        .close-modal { float: right; cursor: pointer; font-size: 1.5rem; }
+
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>📚 Catálogo TSL 2025</h1>
+    <p>Enseñanzas de los Maestros Ascendidos para tu Crecimiento Interior</p>
+</header>
+
+<div class="controls">
+    <select id="categoryFilter" onchange="renderBooks()">
+        <option value="all">Todas las Categorías</option>
+        <option value="Angeles">Ángeles y Arcángeles</option>
+        <option value="SaintGermain">Saint Germain y Llama Violeta</option>
+        <option value="Lemuria">Lemuria y Astrología</option>
+        <option value="Sanacion">Sanación Energética</option>
+        <option value="Alma">Viaje del Alma</option>
+    </select>
+    <input type="text" id="searchBox" placeholder="Buscar título o autor..." onkeyup="renderBooks()">
+    <button class="cart-btn" onclick="openCart()">🛒 Ver Carrito (<span id="cartCount">0</span>)</button>
+</div>
+
+<div class="container" id="bookContainer">
+    </div>
+
+<div class="info-section">
+    <h2>Información de Pago y Envío</h2>
+    <div class="info-grid">
+        <div>
+            <h3>💳 Formas de Pago</h3>
+            <p>Seña del 50% para reservar.</p>
+            <p><strong>Bancolombia Ahorros:</strong> 66878406649</p>
+            <p><strong>Nequi:</strong> 312 467 3369</p>
+        </div>
+        <div>
+            <h3>🚚 Envíos</h3>
+            <p>A toda Colombia ($9.000 - $20.000 aprox).</p>
+            <p>Fecha límite pedido: <span class="highlight">15 de Enero 2026</span></p>
+        </div>
+    </div>
+</div>
+
+<div id="cartModal">
+    <div class="modal-content">
+        <span class="close-modal" onclick="closeCart()">&times;</span>
+        <h2>Tu Pedido</h2>
+        <div id="cartItems"></div>
+        <div class="total">Total: $<span id="cartTotal">0</span></div>
+        <a href="#" id="whatsappLink" class="whatsapp-btn" target="_blank">📲 Enviar Pedido por WhatsApp</a>
+        <button onclick="clearCart()" style="margin-top:10px; background:#e74c3c; color:white; border:none; padding:5px 10px; border-radius:3px; cursor:pointer;">Vaciar Carrito</button>
+    </div>
+</div>
+
+<script>
+    // --- BASE DE DATOS DE LIBROS (Extraída del PDF) ---
+    // Puedes agregar más libros copiando y pegando el formato entre llaves { ... },
+    const books = [
+        // Ángeles
+        { id: 1, title: "Ángeles de Curación: El Arcángel Rafael", author: "ECP", price: 44000, category: "Angeles", desc: "Conoce al ángel de la ciencia y la medicina que inspira nuevos remedios." },
+        { id: 2, title: "Ángeles de Protección: Arcángel Miguel", author: "ECP", price: 52300, category: "Angeles", desc: "Relatos verídicos de personas salvadas milagrosamente." },
+        { id: 3, title: "Decretos al Arcángel Miguel", author: "ECP", price: 42000, category: "Angeles", desc: "Recopilación esencial de oraciones de protección." },
+        
+        // Saint Germain
+        { id: 4, title: "Llama Violeta: Alquimia Personal", author: "ECP", price: 71500, category: "SaintGermain", desc: "El eslabón perdido para la vitalidad y disolver energía negativa." },
+        { id: 5, title: "Saint Germain: Sobre Alquimia", author: "ECP", price: 81000, category: "SaintGermain", desc: "Manual clásico sobre la ciencia de la precipitación y transformación." },
+        { id: 6, title: "La Niña que buscaba a Saint Germain", author: "Judith Mestre", price: 60000, category: "SaintGermain", desc: "Relato íntimo de la infancia de Elizabeth Clare Prophet." },
+
+        // Lemuria y Astrología
+        { id: 7, title: "El Continente Perdido de Mu", author: "James Churchward", price: 74200, category: "Lemuria", desc: "Investigación sobre la tierra natal de la humanidad sumergida." },
+        { id: 8, title: "Efecto Espejo entre Signos", author: "Jose Luis Belmonte", price: 54900, category: "Lemuria", desc: "Descubre por qué te atraen o repelen ciertos signos." },
+
+        // Sanación
+        { id: 9, title: "Bioenergética", author: "Pérez Chávez et al.", price: 76000, category: "Sanacion", desc: "Reconoce tu cuerpo como productor de energía." },
+        { id: 10, title: "Cómo trabajar con tus Chakras", author: "ECP", price: 56300, category: "Sanacion", desc: "Utiliza tus centros de energía como transformadores espirituales." },
+
+        // Viaje del Alma
+        { id: 11, title: "Karma y Reencarnación", author: "ECP", price: 71800, category: "Alma", desc: "Las enseñanzas perdidas de Jesús sobre el karma y la reencarnación." },
+        { id: 12, title: "La Ley de los Ciclos", author: "ECP", price: 49200, category: "Alma", desc: "Utiliza el 'Reloj Cósmico' para anticipar tus ciclos de karma." }
+    ];
+
+    let cart = [];
+
+    // Renderizar libros
+    function renderBooks() {
+        const container = document.getElementById('bookContainer');
+        const category = document.getElementById('categoryFilter').value;
+        const search = document.getElementById('searchBox').value.toLowerCase();
+        
+        container.innerHTML = '';
+
+        const filtered = books.filter(book => {
+            const matchCat = category === 'all' || book.category === category;
+            const matchSearch = book.title.toLowerCase().includes(search) || book.author.toLowerCase().includes(search);
+            return matchCat && matchSearch;
+        });
+
+        filtered.forEach(book => {
+            const card = document.createElement('div');
+            card.className = 'book-card';
+            card.innerHTML = `
+                <div class="book-header">${book.category.toUpperCase()}</div>
+                <div class="book-body">
+                    <h3 class="book-title">${book.title}</h3>
+                    <span class="book-author">Autor: ${book.author}</span>
+                    <p class="book-desc">${book.desc}</p>
+                </div>
+                <div class="book-footer">
+                    <span class="price">$${book.price.toLocaleString('es-CO')}</span>
+                    <button class="add-btn" onclick="addToCart(${book.id})">Agregar +</button>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+    }
+
+    // Lógica del Carrito
+    function addToCart(id) {
+        const book = books.find(b => b.id === id);
+        cart.push(book);
+        updateCartUI();
+        alert(`"${book.title}" agregado al carrito.`);
+    }
+
+    function updateCartUI() {
+        document.getElementById('cartCount').innerText = cart.length;
+    }
+
+    function openCart() {
+        const modal = document.getElementById('cartModal');
+        const itemsDiv = document.getElementById('cartItems');
+        const totalSpan = document.getElementById('cartTotal');
+        
+        itemsDiv.innerHTML = '';
+        let total = 0;
+        let message = "Hola, me gustaría pedir los siguientes libros del Catálogo TSL 2025:%0A%0A";
+
+        cart.forEach((item, index) => {
+            total += item.price;
+            itemsDiv.innerHTML += `
+                <div class="cart-item">
+                    <span>${item.title}</span>
+                    <span>$${item.price.toLocaleString('es-CO')}</span>
+                </div>
+            `;
+            message += `- ${item.title} ($${item.price.toLocaleString('es-CO')})%0A`;
+        });
+
+        message += `%0ATotal a pagar: $${total.toLocaleString('es-CO')}%0A%0AQuedo atento a las instrucciones de pago.`;
+        
+        totalSpan.innerText = total.toLocaleString('es-CO');
+        
+        // Número de WhatsApp configurado (según el PDF: 316 536 - 8655)
+        document.getElementById('whatsappLink').href = `https://wa.me/573165368655?text=${message}`;
+        
+        modal.style.display = 'flex';
+    }
+
+    function closeCart() {
+        document.getElementById('cartModal').style.display = 'none';
+    }
+
+    function clearCart() {
+        cart = [];
+        updateCartUI();
+        closeCart();
+    }
+
+    // Inicializar
+    window.onclick = function(event) {
+        if (event.target == document.getElementById('cartModal')) {
+            closeCart();
+        }
+    }
+    renderBooks();
+</script>
+
+</body>
+</html>
