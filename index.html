@@ -35,12 +35,14 @@
         .book-card:hover { transform: translateY(-5px); }
         
         /* Badges (Estrella y Círculo) */
-        .badges { position: absolute; top: 10px; right: 10px; display: flex; gap: 5px; }
+        .badges { position: absolute; top: 10px; right: 10px; display: flex; gap: 5px; z-index: 10; }
         .badge { padding: 5px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; color: white; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
         .badge-star { background-color: var(--accent); color: #333; } /* Estrella */
         .badge-circle { background-color: var(--fast); } /* Círculo */
 
-        .book-header { background-color: var(--secondary); padding: 1rem; text-align: center; font-weight: bold; color: var(--primary); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; }
+        .book-header { background-color: var(--secondary); padding: 1rem; text-align: center; font-weight: bold; color: var(--primary); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 25px; } 
+        /* Margin top añadido para no tapar badges si hay muchos */
+
         .book-body { padding: 1.5rem; flex-grow: 1; }
         .book-title { font-size: 1.3rem; margin: 0 0 10px 0; color: #2c3e50; font-weight: 700; line-height: 1.3; }
         .book-author { color: #7f8c8d; font-size: 0.95rem; font-style: italic; margin-bottom: 15px; display: block; }
@@ -126,17 +128,10 @@
 </div>
 
 <script>
-    /* INSTRUCCIONES PARA EL USUARIO:
-       1. Busca el libro que tiene Estrella o Círculo en tu catálogo físico.
-       2. En la lista de abajo, busca ese libro.
-       3. Si tiene ESTRELLA: cambia "promo: false" por "promo: true".
-       4. Si tiene CÍRCULO: cambia "rapido: false" por "rapido: true".
-    */
-
     const books = [
         // --- CATEGORÍA 1: ÁNGELES Y ARCÁNGELES ---
         { id: 1, title: "Ángeles de Curación: El Arcángel Rafael", author: "ECP", price: 44000, category: "Angeles", promo: false, rapido: false, desc: "Conoce al ángel de la ciencia y la medicina que inspira nuevos remedios y sana cuerpo, mente y alma." },
-        { id: 2, title: "Ángeles de Protección, Historias Reales del Arcángel Miguel", author: "ECP", price: 52300, category: "Angeles", promo: false, rapido: false, desc: "Relatos verídicos de personas salvadas milagrosamente por la intercesión del Arcángel Miguel." },
+        { id: 2, title: "Ángeles de Protección, Historias Reales del Arcángel Miguel", author: "ECP", price: 52300, category: "Angeles", promo: true, rapido: false, desc: "Relatos verídicos de personas salvadas milagrosamente por la intercesión del Arcángel Miguel." },
         { id: 3, title: "Ángeles del Éxito, Los Serafines", author: "ECP", price: 42000, category: "Angeles", promo: false, rapido: false, desc: "Aprende a invocar a los ángeles de la victoria para triunfar en tus metas y no rendirte jamás." },
         { id: 4, title: "Ángeles que Ayudan en los Cambios: El Arcángel Uriel", author: "ECP", price: 45000, category: "Angeles", promo: false, rapido: false, desc: "Cinco claves del Arcángel Uriel para sanar tus emociones y navegar los cambios personales y planetarios." },
         { id: 5, title: "Los Ángeles te Ayudan a Crear Milagros en tu Vida", author: "ECP", price: 49500, category: "Angeles", promo: false, rapido: false, desc: "Una guía práctica para trabajar con los ángeles y transformar situaciones difíciles en milagros cotidianos." },
@@ -164,27 +159,26 @@
         { id: 21, title: "Bioenergética", author: "Pérez Chávez et al.", price: 76000, category: "Sanacion", promo: false, rapido: false, desc: "Reconoce tu cuerpo como productor de energía y comprende tu carácter para encontrar una luz en el camino de la vida." },
         { id: 22, title: "Cómo Trabajar con tus Chakras", author: "ECP", price: 56300, category: "Sanacion", promo: false, rapido: false, desc: "Utiliza tus centros de energía como transformadores espirituales para sanarte a ti mismo y bendecir a quienes te rodean." },
         { id: 23, title: "El Señor de la Curación", author: "ECP", price: 64200, category: "Sanacion", promo: false, rapido: false, desc: "Enseñanzas desde el Templo de la Verdad en Creta para la sanación y la búsqueda de la integridad." },
-        { id: 24, title: "La Ciencia de la Palabra Hablada", author: "ECP", price: 73600, category: "Sanacion", promo: false, rapido: false, desc: "Desencadena tu potencial creativo ilimitado usando el poder del decreto dinámico y la respiración rítmica." },
+        { id: 24, title: "La Ciencia de la Palabra Hablada", author: "ECP", price: 73600, category: "Sanacion", promo: true, rapido: false, desc: "Desencadena tu potencial creativo ilimitado usando el poder del decreto dinámico y la respiración rítmica." },
         { id: 25, title: "Tus Siete Centros de Energía", author: "ECP", price: 44200, category: "Sanacion", promo: false, rapido: false, desc: "Optimiza tu flujo vital armonizando tus chakras para una salud total: física y espiritual." },
         { id: 26, title: "Recetas para una Vida Espiritual", author: "ECP & Patricia Spadaro", price: 55600, category: "Sanacion", promo: false, rapido: false, desc: "Un manual de bolsillo con temas prácticos para equilibrar tu vida y escuchar tu voz interior en medio del ajetreo. Descubre tu misión y equilibra tu vida." },
         { id: 27, title: "La Práctica de la Santidad", author: "ECP", price: 63300, category: "Sanacion", promo: false, rapido: false, desc: "Sermones inspiradores con historias y sentido común para cultivar una comunión íntima con Dios en la vida diaria." },
         { id: 28, title: "Secretos de Prosperidad", author: "Annice Booth", price: 68000, category: "Sanacion", promo: false, rapido: false, desc: "La verdadera prosperidad no es solo dinero, es una sensación de abundancia divina que puedes aprender a manifestar." },
         { id: 29, title: "Consigue lo que Necesites del Universo", author: "ECP", price: 48400, category: "Sanacion", promo: false, rapido: false, desc: "Técnicas sencillas para desarrollar una relación productiva con el Espíritu y reclamar la alegría y autoridad que te pertenecen (Accede al poder de tu Yo Superior)." },
         { id: 30, title: "Homeopatía: El Pulso Activador de la Fuerza Vital", author: "Dra. Sigrida Robert", price: 52600, category: "Sanacion", promo: false, rapido: false, desc: "Comprende cómo la homeopatía no solo cura síntomas, sino que estimula la fuerza vital inteligente de tu cuerpo para una autocuración profunda y segura." },
-        { id: 31, title: "Nutrición y Homeopatía", author: "Dra. Sigrida Robert", price: 34100, category: "Sanacion", promo: false, rapido: false, desc: "Una guía clara para distinguir los alimentos que elevan tu vibración y salud de aquellos que intoxican silenciosamente tu sistema y bloquean tu energía." },
+        { id: 31, title: "Nutrición y Homeopatía", author: "Dra. Sigrida Robert", price: 34100, category: "Sanacion", promo: true, rapido: false, desc: "Una guía clara para distinguir los alimentos que elevan tu vibración y salud de aquellos que intoxican silenciosamente tu sistema y bloquean tu energía." },
 
         // --- CATEGORÍA 5: EL VIAJE DEL ALMA: KARMA Y CICLOS ---
         { id: 32, title: "Conexiones con Otras Vidas", author: "ECP & Patricia Spadaro", price: 52800, category: "Alma", promo: false, rapido: false, desc: "Explora tu pasado eterno para entender y sanar tu presente." },
         { id: 33, title: "El Príncipe, el Dragón y la Perla", author: "ECP", price: 62300, category: "Alma", promo: false, rapido: false, desc: "La historia de tu alma escrita en las estrellas: recupera tu verdadera identidad y vence a los dragones que te limitan." },
         { id: 34, title: "El Sendero Hacia la Inmortalidad", author: "ECP", price: 79500, category: "Alma", promo: false, rapido: false, desc: "La reencarnación es solo una escuela, la Ascensión es la graduación: descubre el mapa exacto para unirte con Dios y no tener que volver a morir." },
         { id: 35, title: "La Ley de los Ciclos", author: "ECP", price: 49200, category: "Alma", promo: false, rapido: false, desc: "Utiliza el 'Reloj Cósmico' para anticipar tus ciclos de karma y aprovechar los momentos de oportunidad espiritual." },
-        { id: 36, title: "La Vida Después de la Muerte", author: "ECP", price: 63000, category: "Alma", promo: false, rapido: false, desc: "Pierde el miedo a lo desconocido explorando qué sucede realmente con el alma cuando cruza al otro lado." },
+        { id: 36, title: "La Vida Después de la Muerte", author: "ECP", price: 63000, category: "Alma", promo: true, rapido: false, desc: "Pierde el miedo a lo desconocido explorando qué sucede realmente con el alma cuando cruza al otro lado." },
         { id: 37, title: "Las Enseñanzas Perdidas de Jesús", author: "ECP", price: 71800, category: "Alma", promo: false, rapido: false, desc: "Redescubre los textos antiguos (Textos Perdidos) que revelan lo que Jesús realmente enseñó sobre el karma, la reencarnación y la mujer." },
         { id: 38, title: "Predice tu Futuro: Astrología de la Madre Divina", author: "ECP", price: 78400, category: "Alma", promo: false, rapido: false, desc: "Aplica la astrología de la Madre Divina para trazar tus ciclos kármicos y tomar el control de tu destino." },
         { id: 39, title: "Reencarnación: Historias de Misericordia", author: "Mark & ECP", price: 58100, category: "Alma", promo: false, rapido: false, desc: "Descubre las vidas pasadas de personajes famosos y entiende cómo sus elecciones moldearon su destino actual (Revelaciones Kármicas)." },
 
         // --- CATEGORÍA 6: MAESTRÍA DEL SER: PSICOLOGÍA Y ASCENSIÓN ---
-        // Aquí se incluyen también los libros de "Escala la Montaña"
         { id: 40, title: "10.001 Avatares", author: "Dr. Ralph Dickson Yaney", price: 59800, category: "Maestria", promo: false, rapido: false, desc: "Descubre la estrategia de las fuerzas de la oscuridad en la batalla de Armagedón y cómo puedes establecer tu curso para la victoria final." },
         { id: 41, title: "Aventura del Espíritu", author: "Mark & ECP", price: 67600, category: "Maestria", promo: false, rapido: false, desc: "Un curso de siete lecciones con herramientas prácticas para explorar tu identidad espiritual y conectar con tu Yo Superior." },
         { id: 42, title: "Comunidad", author: "ECP", price: 67000, category: "Maestria", promo: false, rapido: false, desc: "Descubre los principios universales y visionarios para construir una sociedad basada en la hermandad y el propósito divino." },
@@ -194,20 +188,20 @@
         { id: 46, title: "El Sendero de la Hermandad", author: "ECP", price: 59800, category: "Maestria", promo: false, rapido: false, desc: "Descubre cómo restaurar la armonía perdida desde la caída de Lemuria y lograr una verdadera unidad espiritual hoy día." },
         { id: 47, title: "El Sendero Hacia el Logro", author: "ECP", price: 83450, category: "Maestria", promo: false, rapido: false, desc: "Deja de perseguir el éxito y empieza a atraerlo: domina las fórmulas metafísicas que convierten tus metas espirituales en realidades materiales tangibles." },
         { id: 48, title: "El Sendero Místico a la Divinidad", author: "ECP", price: 60700, category: "Maestria", promo: false, rapido: false, desc: "Para quien ya superó los dogmas: una guía práctica para experimentar la unión directa con Dios sin intermediarios del mundo y encontrar tu propio camino interior." },
-        { id: 49, title: "El Sendero del Cristo Universal", author: "Mark & ECP", price: 60000, category: "Maestria", promo: false, rapido: false, desc: "Redescubre las claves perdidas de Jesús para hallar a Dios en tu interior, aprender a entrar en contacto con tu fuente interna de energía y acceder así a tu potencial ilimitado." },
+        { id: 49, title: "El Sendero del Cristo Universal", author: "Mark & ECP", price: 60000, category: "Maestria", promo: false, rapido: true, desc: "Redescubre las claves perdidas de Jesús para hallar a Dios en tu interior, aprender a entrar en contacto con tu fuente interna de energía y acceder así a tu potencial ilimitado." },
         { id: 50, title: "Iniciaciones del Corazón", author: "ECP", price: 51700, category: "Maestria", promo: false, rapido: false, desc: "Aumenta el fuego de tu corazón y supera las pruebas del amor divino de la mano de los Maestros Ascendidos." },
         { id: 51, title: "La Apertura del Séptimo Sello", author: "ECP", price: 75000, category: "Maestria", promo: false, rapido: false, desc: "Enseñanzas de Sanat Kumara sobre el sendero del rayo rubí y las profecías para los tiempos finales." },
         { id: 52, title: "La Comprensión de Uno Mismo", author: "ECP", price: 86000, category: "Maestria", promo: false, rapido: false, desc: "Ve más allá de los límites de la psicología convencional: rompe las cadenas de tu pasado y descubre la verdadera arquitectura de tu alma para vivir como siempre debiste hacerlo." },
         { id: 53, title: "Las Llaves del Reino y Nuevas Dimensiones", author: "ECP", price: 52400, category: "Maestria", promo: false, rapido: false, desc: "Pasos prácticos para alcanzar la conciencia cósmica y abrir las puertas a nuevas dimensiones de tu ser." },
-        { id: 54, title: "Los Maestros y el Sendero Espiritual", author: "ECP", price: 69400, category: "Maestria", promo: false, rapido: false, desc: "Una introducción esencial a la Jerarquía Espiritual y cómo los maestros guían a la humanidad paso a paso." },
+        { id: 54, title: "Los Maestros y el Sendero Espiritual", author: "ECP", price: 69400, category: "Maestria", promo: true, rapido: true, desc: "Una introducción esencial a la Jerarquía Espiritual y cómo los maestros guían a la humanidad paso a paso." },
         { id: 55, title: "Morya I", author: "Mark & ECP", price: 83400, category: "Maestria", promo: false, rapido: false, desc: "El Maestro El Morya se revela como un gurú estricto pero amoroso, enseñando la maestría sobre el yo inferior." },
         { id: 56, title: "Notas del Ashram", author: "ECP", price: 60000, category: "Maestria", promo: false, rapido: false, desc: "Únete a una orden espiritual invisible y sin cuotas: aprende los rituales sagrados de El Morya para contactar a los Maestros y enviar luz sanadora al mundo desde tu propio hogar." },
-        { id: 57, title: "Senderos de Luz y Oscuridad", author: "ECP", price: 92840, category: "Maestria", promo: false, rapido: false, desc: "El Armagedón es real y ocurre ahora: descubre las estrategias ocultas de la oscuridad -desde conspiraciones hasta ingeniería genética- y aprende cómo ganar la batalla final en tu propia mente." },
+        { id: 57, title: "Senderos de Luz y Oscuridad", author: "ECP", price: 92840, category: "Maestria", promo: false, rapido: true, desc: "El Armagedón es real y ocurre ahora: descubre las estrategias ocultas de la oscuridad -desde conspiraciones hasta ingeniería genética- y aprende cómo ganar la batalla final en tu propia mente." },
         { id: 58, title: "El Regreso a la Escuela de Misterios", author: "ECP", price: 63300, category: "Maestria", promo: false, rapido: false, desc: "Regresa al aula del Cristo Cósmico para recuperar la conciencia del Edén. (La Recuperación de la Conciencia Edénica)." },
         { id: 59, title: "Silenciosamente Viene el Buda", author: "ECP", price: 55600, category: "Maestria", promo: false, rapido: false, desc: "Despierta a la iluminación interior a través de la suavidad y el poder del Buda." },
-        { id: 60, title: "El Fuego que Desciende del Cielo", author: "ECP", price: 60000, category: "Maestria", promo: false, rapido: false, desc: "Descubre cómo atraer y sostener el poder del Espíritu Santo. Una guía esencial para acceder a los nueve dones divinos y traer la vibración del cielo a tu realidad diaria." },
-        { id: 61, title: "Enseñanzas de la Escuela de Misterios: Maitreya", author: "ECP", price: 63300, category: "Maestria", promo: false, rapido: false, desc: "Estas enseñanzas te ofrecen las claves iniciáticas para recuperar la conciencia del Edén y superar las pruebas más elevadas del alma de la mano del Señor Maitreya." },
-        { id: 62, title: "Aventura del Espíritu 1: La Búsqueda Espiritual", author: "ECP", price: 118500, category: "Maestria", promo: false, rapido: false, desc: "Explora los misterios del universo, redescubre el propósito de tu alma y encuentra las respuestas que siempre has intuido pero no sabías dónde buscar." },
+        { id: 60, title: "El Fuego que Desciende del Cielo", author: "ECP", price: 60000, category: "Maestria", promo: false, rapido: true, desc: "Descubre cómo atraer y sostener el poder del Espíritu Santo. Una guía esencial para acceder a los nueve dones divinos y traer la vibración del cielo a tu realidad diaria." },
+        { id: 61, title: "Enseñanzas de la Escuela de Misterios: Maitreya", author: "ECP", price: 63300, category: "Maestria", promo: false, rapido: true, desc: "Estas enseñanzas te ofrecen las claves iniciáticas para recuperar la conciencia del Edén y superar las pruebas más elevadas del alma de la mano del Señor Maitreya." },
+        { id: 62, title: "Aventura del Espíritu 1: La Búsqueda Espiritual", author: "ECP", price: 118500, category: "Maestria", promo: false, rapido: true, desc: "Explora los misterios del universo, redescubre el propósito de tu alma y encuentra las respuestas que siempre has intuido pero no sabías dónde buscar." },
         { id: 63, title: "Aventura del Espíritu 2: Conoce a los Maestros", author: "ECP", price: 37000, category: "Maestria", promo: false, rapido: false, desc: "Conoce a los Maestros en un entorno celestial. Explora los misterios del universo y encuentra respuestas." },
         { id: 64, title: "Aventura del Espíritu 3: La Llama Trina", author: "ECP", price: 52800, category: "Maestria", promo: false, rapido: false, desc: "Aprende a activar, equilibrar y expandir las tres plumas de Poder, Sabiduría y Amor que arden en el altar secreto de tu propio corazón." }
     ];
