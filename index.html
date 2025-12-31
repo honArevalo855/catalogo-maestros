@@ -29,9 +29,9 @@
         
         .book-card { background: var(--white); border-radius: 10px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.1); transition: transform 0.3s; display: flex; flex-direction: column; }
         .book-card:hover { transform: translateY(-5px); }
-        .book-header { background-color: var(--secondary); padding: 1rem; text-align: center; font-weight: bold; color: var(--primary); }
+        .book-header { background-color: var(--secondary); padding: 1rem; text-align: center; font-weight: bold; color: var(--primary); font-size: 0.9rem; }
         .book-body { padding: 1.5rem; flex-grow: 1; }
-        .book-title { font-size: 1.2rem; margin: 0 0 10px 0; color: #2c3e50; }
+        .book-title { font-size: 1.2rem; margin: 0 0 10px 0; color: #2c3e50; font-weight: bold; }
         .book-author { color: #7f8c8d; font-size: 0.9rem; font-style: italic; margin-bottom: 10px; display: block; }
         .book-desc { font-size: 0.9rem; color: #555; line-height: 1.4; }
         .book-footer { padding: 1rem; border-top: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; background: #fafafa; }
@@ -68,8 +68,10 @@
         <option value="Angeles">Ángeles y Arcángeles</option>
         <option value="SaintGermain">Saint Germain y Llama Violeta</option>
         <option value="Lemuria">Lemuria y Astrología</option>
-        <option value="Sanacion">Sanación Energética</option>
-        <option value="Alma">Viaje del Alma</option>
+        <option value="Sanacion">Sanación y Espiritualidad</option>
+        <option value="Alma">Viaje del Alma y Karma</option>
+        <option value="Maestria">Maestría del Ser</option>
+        <option value="Montana">Serie Escala la Montaña</option>
     </select>
     <input type="text" id="searchBox" placeholder="Buscar título o autor..." onkeyup="renderBooks()">
     <button class="cart-btn" onclick="openCart()">🛒 Ver Carrito (<span id="cartCount">0</span>)</button>
@@ -107,30 +109,85 @@
 </div>
 
 <script>
-    // --- BASE DE DATOS DE LIBROS (Extraída del PDF) ---
-    // Puedes agregar más libros copiando y pegando el formato entre llaves { ... },
+    // --- BASE DE DATOS COMPLETA DE LIBROS (64 TÍTULOS) ---
     const books = [
-        // Ángeles
+        // --- ÁNGELES Y ARCÁNGELES ---
         { id: 1, title: "Ángeles de Curación: El Arcángel Rafael", author: "ECP", price: 44000, category: "Angeles", desc: "Conoce al ángel de la ciencia y la medicina que inspira nuevos remedios." },
-        { id: 2, title: "Ángeles de Protección: Arcángel Miguel", author: "ECP", price: 52300, category: "Angeles", desc: "Relatos verídicos de personas salvadas milagrosamente." },
-        { id: 3, title: "Decretos al Arcángel Miguel", author: "ECP", price: 42000, category: "Angeles", desc: "Recopilación esencial de oraciones de protección." },
-        
-        // Saint Germain
-        { id: 4, title: "Llama Violeta: Alquimia Personal", author: "ECP", price: 71500, category: "SaintGermain", desc: "El eslabón perdido para la vitalidad y disolver energía negativa." },
-        { id: 5, title: "Saint Germain: Sobre Alquimia", author: "ECP", price: 81000, category: "SaintGermain", desc: "Manual clásico sobre la ciencia de la precipitación y transformación." },
-        { id: 6, title: "La Niña que buscaba a Saint Germain", author: "Judith Mestre", price: 60000, category: "SaintGermain", desc: "Relato íntimo de la infancia de Elizabeth Clare Prophet." },
+        { id: 2, title: "Ángeles de Protección, Historias Reales del Arcángel Miguel", author: "ECP", price: 52300, category: "Angeles", desc: "Relatos verídicos de personas salvadas milagrosamente por intercesión del Arcángel." },
+        { id: 3, title: "Ángeles del Éxito, Los Serafines", author: "ECP", price: 42000, category: "Angeles", desc: "Aprende a invocar a los ángeles de la victoria para triunfar en tus metas." },
+        { id: 4, title: "Ángeles que Ayudan en Cambios: Arcángel Uriel", author: "ECP", price: 45000, category: "Angeles", desc: "Cinco claves para sanar emociones y navegar cambios personales." },
+        { id: 5, title: "Los Ángeles te Ayudan a Crear Milagros", author: "ECP", price: 49500, category: "Angeles", desc: "Guía práctica para transformar situaciones difíciles en milagros cotidianos." },
+        { id: 6, title: "Decretos al Arcángel Miguel", author: "ECP", price: 42000, category: "Angeles", desc: "Recopilación esencial de oraciones de protección para blindarte." },
+        { id: 7, title: "Rosario del Arcángel Miguel para Armagedón", author: "ECP", price: 40500, category: "Angeles", desc: "Herramienta de oración diaria para la liberación espiritual." },
 
-        // Lemuria y Astrología
-        { id: 7, title: "El Continente Perdido de Mu", author: "James Churchward", price: 74200, category: "Lemuria", desc: "Investigación sobre la tierra natal de la humanidad sumergida." },
-        { id: 8, title: "Efecto Espejo entre Signos", author: "Jose Luis Belmonte", price: 54900, category: "Lemuria", desc: "Descubre por qué te atraen o repelen ciertos signos." },
+        // --- SAINT GERMAIN Y LLAMA VIOLETA ---
+        { id: 8, title: "La Niña que Buscaba a Saint Germain", author: "Judith Mestre", price: 60000, category: "SaintGermain", desc: "Relato íntimo de la infancia de Elizabeth Clare Prophet." },
+        { id: 9, title: "Llama Violeta: Alquimia para Cambio Personal", author: "ECP", price: 71500, category: "SaintGermain", desc: "El eslabón perdido para la vitalidad: usa esta luz para disolver energía negativa." },
+        { id: 10, title: "Saint Germain: Alquimista y Maestro Libertad", author: "ECP", price: 44000, category: "SaintGermain", desc: "Descubre la labor secreta de Saint Germain en la historia." },
+        { id: 11, title: "Saint Germain: El Misterio de la Llama Violeta", author: "ECP", price: 48500, category: "SaintGermain", desc: "Conoce al jerarca de la Era de Acuario y su regalo de libertad." },
+        { id: 12, title: "El Conde de Saint Germain", author: "Isabel Cooper-Oakley", price: 70000, category: "SaintGermain", desc: "Crónica histórica del 'hombre que nunca muere' y confidente de reyes." },
+        { id: 13, title: "Saint Germain: Sobre Alquimia", author: "ECP", price: 81000, category: "SaintGermain", desc: "Fórmulas para la autotransformación y ciencia de la precipitación." },
+        { id: 14, title: "Decretos de Llama Violeta", author: "ECP", price: 41000, category: "SaintGermain", desc: "Aprende a usar el 'borrador cósmico' para transmutar errores." },
 
-        // Sanación
-        { id: 9, title: "Bioenergética", author: "Pérez Chávez et al.", price: 76000, category: "Sanacion", desc: "Reconoce tu cuerpo como productor de energía." },
-        { id: 10, title: "Cómo trabajar con tus Chakras", author: "ECP", price: 56300, category: "Sanacion", desc: "Utiliza tus centros de energía como transformadores espirituales." },
+        // --- LEMURIA Y ASTROLOGÍA ---
+        { id: 15, title: "Efecto Espejo entre Signos del Zodiaco", author: "José Luis Belmonte", price: 54900, category: "Lemuria", desc: "Descubre por qué te atraen o repelen ciertos signos." },
+        { id: 16, title: "El Camino del Héroe a través del Zodiaco", author: "Kathie Garcia", price: 80200, category: "Lemuria", desc: "Interpreta tu carta natal como un mapa para el viaje de tu alma." },
+        { id: 17, title: "El Continente Perdido de Mu", author: "James Churchward", price: 74200, category: "Lemuria", desc: "Investigación sobre la tierra natal de la humanidad sumergida." },
+        { id: 18, title: "Los Hijos de Mu", author: "James Churchward", price: 58400, category: "Lemuria", desc: "Rastrea las huellas de la civilización perdida de Lemuria." },
+        { id: 19, title: "Memorias de una Mística Negra del Bronx", author: "Bonita Jones", price: 43700, category: "Lemuria", desc: "Autobiografía de superación racial y destino espiritual." },
 
-        // Viaje del Alma
-        { id: 11, title: "Karma y Reencarnación", author: "ECP", price: 71800, category: "Alma", desc: "Las enseñanzas perdidas de Jesús sobre el karma y la reencarnación." },
-        { id: 12, title: "La Ley de los Ciclos", author: "ECP", price: 49200, category: "Alma", desc: "Utiliza el 'Reloj Cósmico' para anticipar tus ciclos de karma." }
+        // --- SANACIÓN Y ESPIRITUALIDAD ---
+        { id: 20, title: "Alquimia del Corazón", author: "ECP & Patricia Spadaro", price: 63400, category: "Sanacion", desc: "Fortalece tu corazón espiritual para dar y recibir más amor." },
+        { id: 21, title: "Bioenergética", author: "Pérez Chávez et al.", price: 76000, category: "Sanacion", desc: "Reconoce tu cuerpo como productor de energía y comprende tu carácter." },
+        { id: 22, title: "Cómo Trabajar con tus Chakras", author: "ECP", price: 56300, category: "Sanacion", desc: "Usa tus centros de energía como transformadores espirituales." },
+        { id: 23, title: "El Señor de la Curación", author: "ECP", price: 64200, category: "Sanacion", desc: "Enseñanzas desde el Templo de la Verdad para la sanación." },
+        { id: 24, title: "La Ciencia de la Palabra Hablada", author: "ECP", price: 73600, category: "Sanacion", desc: "Desencadena tu potencial creativo usando el decreto dinámico." },
+        { id: 25, title: "Tus Siete Centros de Energía", author: "ECP", price: 44200, category: "Sanacion", desc: "Optimiza tu flujo vital armonizando tus chakras." },
+        { id: 26, title: "Recetas para una Vida Espiritual", author: "ECP & Patricia Spadaro", price: 55600, category: "Sanacion", desc: "Manual de bolsillo para equilibrar tu vida y escuchar tu voz interior." },
+        { id: 27, title: "La Práctica de la Santidad", author: "ECP", price: 63300, category: "Sanacion", desc: "Sermones inspiradores para cultivar una comunión con Dios." },
+        { id: 28, title: "Secretos de Prosperidad", author: "Annice Booth", price: 68000, category: "Sanacion", desc: "La prosperidad es abundancia divina que puedes manifestar." },
+        { id: 29, title: "Consigue lo que Necesites del Universo", author: "ECP", price: 48400, category: "Sanacion", desc: "Técnicas para desarrollar una relación productiva con el Espíritu." },
+        { id: 30, title: "Homeopatía: El Pulso Activador", author: "Dra. Sigrida Robert", price: 52600, category: "Sanacion", desc: "Cómo la homeopatía estimula la fuerza vital para la autocuración." },
+        { id: 31, title: "Nutrición y Homeopatía", author: "Dra. Sigrida Robert", price: 34100, category: "Sanacion", desc: "Guía de alimentos que elevan tu vibración vs los que intoxican." },
+
+        // --- VIAJE DEL ALMA Y KARMA ---
+        { id: 32, title: "Conexiones con Otras Vidas", author: "ECP & Patricia Spadaro", price: 52800, category: "Alma", desc: "Explora tu pasado eterno para entender y sanar tu presente." },
+        { id: 33, title: "El Príncipe, el Dragón y la Perla", author: "ECP", price: 62300, category: "Alma", desc: "La historia de tu alma escrita en las estrellas." },
+        { id: 34, title: "El Sendero Hacia la Inmortalidad", author: "ECP", price: 79500, category: "Alma", desc: "El mapa exacto para unirte con Dios y no volver a morir." },
+        { id: 35, title: "La Ley de los Ciclos", author: "ECP", price: 49200, category: "Alma", desc: "Utiliza el 'Reloj Cósmico' para anticipar tus ciclos de karma." },
+        { id: 36, title: "La Vida Después de la Muerte", author: "ECP", price: 63000, category: "Alma", desc: "Pierde el miedo explorando qué sucede con el alma al cruzar." },
+        { id: 37, title: "Las Enseñanzas Perdidas de Jesús", author: "ECP", price: 71800, category: "Alma", desc: "Textos antiguos sobre karma, reencarnación y la mujer." },
+        { id: 38, title: "Predice tu Futuro: Astrología Madre Divina", author: "ECP", price: 78400, category: "Alma", desc: "Traza tus ciclos kármicos y toma el control de tu destino." },
+        { id: 39, title: "Reencarnación: Historias de Misericordia", author: "Mark & ECP", price: 58100, category: "Alma", desc: "Vidas pasadas de personajes famosos y sus elecciones." },
+
+        // --- MAESTRÍA DEL SER ---
+        { id: 40, title: "10.001 Avatares", author: "Dr. Ralph Yaney", price: 59800, category: "Maestria", desc: "Estrategia contra la oscuridad y curso para la victoria final." },
+        { id: 41, title: "Aventura del Espíritu", author: "Mark & ECP", price: 67600, category: "Maestria", desc: "Curso de siete lecciones para conectar con tu Yo Superior." },
+        { id: 42, title: "Comunidad", author: "ECP", price: 67000, category: "Maestria", desc: "Principios visionarios para una sociedad basada en la hermandad." },
+        { id: 43, title: "El Culto al Placer", author: "Mark & ECP", price: 54900, category: "Maestria", desc: "Cómo el hedonismo atrapa el alma en la batalla Luz/Oscuridad." },
+        { id: 44, title: "El Sendero del Yo Superior", author: "ECP", price: 103700, category: "Maestria", desc: "La hoja de ruta esencial que revela el código de tu identidad." },
+        { id: 45, title: "El Sendero de Cristo o Anticristo", author: "ECP", price: 54900, category: "Maestria", desc: "Reconoce las semillas del anticristo para defender la Luz." },
+        { id: 46, title: "El Sendero de la Hermandad", author: "ECP", price: 59800, category: "Maestria", desc: "Cómo restaurar la armonía perdida desde Lemuria." },
+        { id: 47, title: "El Sendero Hacia el Logro", author: "ECP", price: 83450, category: "Maestria", desc: "Fórmulas metafísicas para convertir metas espirituales en realidad." },
+        { id: 48, title: "El Sendero Místico a la Divinidad", author: "ECP", price: 60700, category: "Maestria", desc: "Guía práctica para la unión directa con Dios sin intermediarios." },
+        { id: 49, title: "El Sendero del Cristo Universal", author: "Mark & ECP", price: 60000, category: "Maestria", desc: "Claves perdidas de Jesús para hallar a Dios en tu interior." },
+        { id: 50, title: "Iniciaciones del Corazón", author: "ECP", price: 51700, category: "Maestria", desc: "Supera las pruebas del amor divino de la mano de los Maestros." },
+        { id: 51, title: "La Apertura del Séptimo Sello", author: "ECP", price: 75000, category: "Maestria", desc: "Enseñanzas de Sanat Kumara sobre el rayo rubí y profecías." },
+        { id: 52, title: "La Comprensión de Uno Mismo", author: "ECP", price: 86000, category: "Maestria", desc: "Rompe cadenas del pasado y descubre la arquitectura de tu alma." },
+        { id: 53, title: "Las Llaves del Reino", author: "ECP", price: 52400, category: "Maestria", desc: "Pasos prácticos para alcanzar la conciencia cósmica." },
+        { id: 54, title: "Los Maestros y el Sendero Espiritual", author: "ECP", price: 69400, category: "Maestria", desc: "Introducción a la Jerarquía Espiritual y su guía." },
+        { id: 55, title: "Morya I", author: "Mark & ECP", price: 83400, category: "Maestria", desc: "El Maestro El Morya enseña la maestría sobre el yo inferior." },
+        { id: 56, title: "Notas del Ashram", author: "ECP", price: 60000, category: "Maestria", desc: "Rituales sagrados de El Morya para contactar a los Maestros." },
+
+        // --- SERIE ESCALA LA MONTAÑA ---
+        { id: 57, title: "Senderos de Luz y Oscuridad", author: "ECP", price: 92840, category: "Montana", desc: "Estrategias ocultas de la oscuridad y cómo ganar la batalla mental." },
+        { id: 58, title: "El Regreso a la Escuela de Misterios", author: "ECP", price: 63300, category: "Montana", desc: "Recupera la conciencia del Edén en el aula del Cristo Cósmico." },
+        { id: 59, title: "Silenciosamente Viene el Buda", author: "ECP", price: 55600, category: "Montana", desc: "Despierta a la iluminación a través de la suavidad del Buda." },
+        { id: 60, title: "El Fuego que Desciende del Cielo", author: "ECP", price: 60000, category: "Montana", desc: "Cómo atraer y sostener el poder del Espíritu Santo." },
+        { id: 61, title: "Enseñanzas de la Escuela: Maitreya", author: "ECP", price: 63300, category: "Montana", desc: "Claves iniciáticas para superar las pruebas más elevadas." },
+        { id: 62, title: "Aventura del Espíritu 1: Búsqueda Espiritual", author: "ECP", price: 118500, category: "Montana", desc: "Explora los misterios del universo y el propósito de tu alma." },
+        { id: 63, title: "Aventura del Espíritu 2: Conoce a Maestros", author: "ECP", price: 37000, category: "Montana", desc: "Entorno celestial y respuestas que siempre has intuido." },
+        { id: 64, title: "Aventura del Espíritu 3: La Llama Trina", author: "ECP", price: 52800, category: "Montana", desc: "Activa y equilibra Poder, Sabiduría y Amor en tu corazón." }
     ];
 
     let cart = [];
@@ -152,8 +209,15 @@
         filtered.forEach(book => {
             const card = document.createElement('div');
             card.className = 'book-card';
+            let catDisplay = book.category;
+            // Nombres bonitos para mostrar
+            if(catDisplay === 'SaintGermain') catDisplay = 'Saint Germain';
+            if(catDisplay === 'Sanacion') catDisplay = 'Sanación';
+            if(catDisplay === 'Maestria') catDisplay = 'Maestría';
+            if(catDisplay === 'Montana') catDisplay = 'Montaña';
+            
             card.innerHTML = `
-                <div class="book-header">${book.category.toUpperCase()}</div>
+                <div class="book-header">${catDisplay.toUpperCase()}</div>
                 <div class="book-body">
                     <h3 class="book-title">${book.title}</h3>
                     <span class="book-author">Autor: ${book.author}</span>
@@ -173,7 +237,15 @@
         const book = books.find(b => b.id === id);
         cart.push(book);
         updateCartUI();
-        alert(`"${book.title}" agregado al carrito.`);
+        // Feedback visual simple
+        const btn = event.target;
+        const originalText = btn.innerText;
+        btn.innerText = "¡Agregado!";
+        btn.style.background = "#2ecc71";
+        setTimeout(() => {
+            btn.innerText = originalText;
+            btn.style.background = "var(--primary)";
+        }, 1000);
     }
 
     function updateCartUI() {
@@ -187,18 +259,25 @@
         
         itemsDiv.innerHTML = '';
         let total = 0;
+        
+        // Agrupar items iguales (opcional) o listarlos uno por uno
+        // Aquí listamos uno por uno para simplificar
         let message = "Hola, me gustaría pedir los siguientes libros del Catálogo TSL 2025:%0A%0A";
 
-        cart.forEach((item, index) => {
-            total += item.price;
-            itemsDiv.innerHTML += `
-                <div class="cart-item">
-                    <span>${item.title}</span>
-                    <span>$${item.price.toLocaleString('es-CO')}</span>
-                </div>
-            `;
-            message += `- ${item.title} ($${item.price.toLocaleString('es-CO')})%0A`;
-        });
+        if(cart.length === 0) {
+            itemsDiv.innerHTML = "<p>El carrito está vacío.</p>";
+        } else {
+            cart.forEach((item, index) => {
+                total += item.price;
+                itemsDiv.innerHTML += `
+                    <div class="cart-item">
+                        <span>${item.title}</span>
+                        <span>$${item.price.toLocaleString('es-CO')}</span>
+                    </div>
+                `;
+                message += `- ${item.title} ($${item.price.toLocaleString('es-CO')})%0A`;
+            });
+        }
 
         message += `%0ATotal a pagar: $${total.toLocaleString('es-CO')}%0A%0AQuedo atento a las instrucciones de pago.`;
         
@@ -217,7 +296,7 @@
     function clearCart() {
         cart = [];
         updateCartUI();
-        closeCart();
+        openCart(); // Refrescar vista del modal
     }
 
     // Inicializar
