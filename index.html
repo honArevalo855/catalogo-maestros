@@ -4,104 +4,408 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Catálogo de libros 2026</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Raleway:wght@300;400;600&display=swap" rel="stylesheet">
+
     <style>
         :root {
-            --primary: #6a1b9a; /* Violeta */
-            --secondary: #f3e5f5;
-            --accent: #ffd700; /* Dorado para Estrella */
-            --fast: #00C853; /* Verde para Círculo */
-            --text: #333;
-            --white: #ffffff;
-            --danger: #e74c3c;
+            /* Paleta Pastel Sofisticada */
+            --bg-body: #faf9f6; /* Crema muy suave */
+            --card-bg: #ffffff;
+            --primary: #9b89b3; /* Lavanda suave */
+            --primary-dark: #7a6a90;
+            --secondary: #f4f1ea; /* Beige arena */
+            --accent: #d4af37; /* Oro Champagne */
+            --text-main: #4a4a4a; /* Gris pizarra elegante */
+            --text-light: #888888;
+            --success: #81c784; /* Verde pastel */
+            --danger: #e57373; /* Rojo coral suave */
+            --shadow-soft: 0 10px 30px rgba(106, 27, 154, 0.05);
+            --shadow-hover: 0 15px 40px rgba(106, 27, 154, 0.12);
         }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0; background-color: #f9f9f9; color: var(--text); }
-        
-        /* Header y Intro */
-        header { background: linear-gradient(135deg, var(--primary), #4a148c); color: var(--white); padding: 3rem 1rem; text-align: center; }
-        header h1 { margin: 0; font-size: 2.8rem; letter-spacing: 1px; }
-        
-        /* Metadatos para WhatsApp */
-        .meta-tags { display: none; }
-        
-        .intro-box { max-width: 800px; margin: -30px auto 2rem auto; background: white; padding: 2rem; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center; position: relative; }
-        .intro-box h2 { color: var(--primary); margin-top: 0; }
-        .intro-box p { font-size: 1.1rem; line-height: 1.6; color: #555; }
 
-        /* Filtros */
-        .controls { padding: 1rem; background: var(--white); box-shadow: 0 2px 5px rgba(0,0,0,0.1); display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; position: sticky; top: 0; z-index: 100; }
-        select, input { padding: 10px; border: 1px solid #ddd; border-radius: 5px; font-size: 1rem; }
-        button.cart-btn { background-color: #25D366; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; }
-
-        /* Grid de Libros */
-        .container { max-width: 1200px; margin: 2rem auto; padding: 0 1rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 2.5rem; }
+        body { 
+            font-family: 'Raleway', sans-serif; 
+            margin: 0; 
+            padding: 0; 
+            background-color: var(--bg-body); 
+            color: var(--text-main);
+            line-height: 1.6;
+        }
         
-        .book-card { background: var(--white); border-radius: 10px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.1); transition: transform 0.3s; display: flex; flex-direction: column; position: relative; }
-        .book-card:hover { transform: translateY(-5px); }
+        /* --- Header Etérico (Glassmorphism) --- */
+        header { 
+            background: rgba(255, 255, 255, 0.85); 
+            backdrop-filter: blur(12px); /* Efecto vidrio */
+            -webkit-backdrop-filter: blur(12px);
+            padding: 1.5rem 1rem; 
+            text-align: center; 
+            position: sticky; /* Se queda fijo arriba */
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+        }
+        header h1 { 
+            margin: 0; 
+            font-family: 'Playfair Display', serif; 
+            font-size: 2.2rem; 
+            color: var(--primary-dark);
+            letter-spacing: 1px;
+        }
         
-        /* Badges */
-        .badges { position: absolute; top: 10px; right: 10px; display: flex; gap: 5px; z-index: 10; }
-        .badge { padding: 5px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; color: white; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
-        .badge-star { background-color: var(--accent); color: #333; }
-        .badge-circle { background-color: var(--fast); }
+        .intro-box { 
+            max-width: 800px; 
+            margin: 3rem auto; 
+            padding: 0 1.5rem; 
+            text-align: center; 
+        }
+        .intro-box h2 { 
+            font-family: 'Playfair Display', serif; 
+            color: var(--primary); 
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+        .intro-box p { 
+            font-size: 1.05rem; 
+            color: var(--text-main);
+            font-weight: 300; 
+        }
 
-        /* Estilos Imagen */
+        /* --- Filtros Estilizados --- */
+        .controls { 
+            padding: 1.5rem; 
+            display: flex; 
+            justify-content: center; 
+            gap: 15px; 
+            flex-wrap: wrap; 
+            margin-bottom: 2rem;
+        }
+        select, input { 
+            padding: 12px 20px; 
+            border: 1px solid #e0e0e0; 
+            border-radius: 30px; /* Bordes muy redondos */
+            font-size: 0.95rem; 
+            background: white;
+            color: var(--text-main);
+            font-family: 'Raleway', sans-serif;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+        select:focus, input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(155, 137, 179, 0.1);
+        }
+        
+        button.cart-btn { 
+            background: linear-gradient(135deg, var(--success), #66bb6a); 
+            color: white; 
+            border: none; 
+            padding: 12px 30px; 
+            border-radius: 30px; 
+            cursor: pointer; 
+            font-weight: 600; 
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 15px rgba(129, 199, 132, 0.4);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        button.cart-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(129, 199, 132, 0.6);
+        }
+
+        /* --- Grid de Libros --- */
+        .container { 
+            max-width: 1200px; 
+            margin: 0 auto 4rem auto; 
+            padding: 0 1.5rem; 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); 
+            gap: 3rem; 
+        }
+        
+        /* Tarjeta Etérica */
+        .book-card { 
+            background: var(--card-bg); 
+            border-radius: 15px; 
+            overflow: hidden; 
+            box-shadow: var(--shadow-soft); 
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Animación suave */
+            display: flex; 
+            flex-direction: column; 
+            position: relative; 
+            border: 1px solid rgba(0,0,0,0.02);
+        }
+        .book-card:hover { 
+            transform: translateY(-10px); 
+            box-shadow: var(--shadow-hover); 
+        }
+        
+        /* Badges Minimalistas */
+        .badges { 
+            position: absolute; 
+            top: 15px; 
+            right: 15px; 
+            display: flex; 
+            gap: 8px; 
+            z-index: 10; 
+        }
+        .badge { 
+            padding: 6px 12px; 
+            border-radius: 20px; 
+            font-size: 0.75rem; 
+            font-weight: 600; 
+            color: #fff; 
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            backdrop-filter: blur(4px);
+        }
+        .badge-star { background-color: var(--accent); color: white; }
+        .badge-circle { background-color: var(--success); }
+
+        /* Imagen */
         .book-cover-container {
             width: 100%;
-            height: 380px;
-            background-color: #fff;
+            height: 360px;
+            background-color: #fdfdfd;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding-top: 20px;
-            overflow: hidden;
+            padding: 20px 0;
+            position: relative;
         }
         .book-cover {
-            max-width: 90%;
+            max-width: 80%;
             max-height: 100%;
             object-fit: contain;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+            filter: drop-shadow(0 8px 15px rgba(0,0,0,0.1)); /* Sombra realista al libro */
+            transition: transform 0.3s ease;
+        }
+        .book-card:hover .book-cover {
+            transform: scale(1.03); /* Zoom sutil al pasar el mouse */
         }
 
-        .book-header { background-color: var(--secondary); padding: 0.8rem; text-align: center; font-weight: bold; color: var(--primary); font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; }
+        .book-body { padding: 1.5rem; flex-grow: 1; text-align: center; }
         
-        .book-body { padding: 1.5rem; flex-grow: 1; }
-        .book-title { font-size: 1.4rem; margin: 0 0 5px 0; color: #2c3e50; font-weight: 700; line-height: 1.3; text-align: center; }
-        .book-author { color: #7f8c8d; font-size: 0.95rem; font-style: italic; margin-bottom: 15px; display: block; text-align: center; }
+        .book-category {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--primary);
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .book-title { 
+            font-family: 'Playfair Display', serif; 
+            font-size: 1.3rem; 
+            margin: 5px 0; 
+            color: var(--text-main); 
+            font-weight: 700; 
+            line-height: 1.3; 
+        }
+        .book-author { 
+            color: var(--text-light); 
+            font-size: 0.9rem; 
+            font-style: italic; 
+            margin-bottom: 15px; 
+            display: block; 
+        }
         
         .pages-info {
-            font-weight: bold;
-            color: var(--primary);
-            font-size: 0.95rem;
-            margin-bottom: 10px;
-            display: block;
-            text-align: center;
+            display: inline-block;
+            background: var(--secondary);
+            color: var(--text-main);
+            font-size: 0.8rem;
+            padding: 4px 10px;
+            border-radius: 12px;
+            margin-bottom: 12px;
         }
 
-        .book-desc { font-size: 0.95rem; color: #444; line-height: 1.5; text-align: justify; }
+        .book-desc { 
+            font-size: 0.9rem; 
+            color: #666; 
+            line-height: 1.6; 
+            text-align: justify; 
+            margin-top: 10px;
+        }
         
-        .book-footer { padding: 1.2rem; border-top: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; background: #fafafa; }
-        .price { font-size: 1.4rem; font-weight: bold; color: var(--primary); }
+        .book-footer { 
+            padding: 1.2rem 1.5rem; 
+            background: #fff;
+            border-top: 1px solid #f0f0f0; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+        }
+        .price { 
+            font-family: 'Playfair Display', serif; 
+            font-size: 1.4rem; 
+            font-weight: 700; 
+            color: var(--primary-dark); 
+        }
         
-        .add-btn { background-color: var(--primary); color: white; border: none; padding: 10px 25px; border-radius: 25px; cursor: pointer; transition: background 0.3s; font-weight: bold; }
-        .add-btn:hover { background-color: #4a148c; }
+        .add-btn { 
+            background: var(--primary); 
+            color: white; 
+            border: none; 
+            padding: 10px 25px; 
+            border-radius: 50px; 
+            cursor: pointer; 
+            transition: all 0.3s ease; 
+            font-weight: 600; 
+            font-size: 0.9rem;
+            box-shadow: 0 4px 10px rgba(155, 137, 179, 0.3);
+        }
+        .add-btn:hover { 
+            background-color: var(--primary-dark); 
+            box-shadow: 0 6px 15px rgba(122, 106, 144, 0.4);
+            transform: translateY(-1px);
+        }
 
-        /* Footer Info */
-        .info-section { background: #333; color: white; padding: 3rem 1rem; text-align: center; margin-top: 3rem; }
-        .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px; max-width: 1000px; margin: 0 auto; text-align: left; }
+        /* --- Footer Info --- */
+        .info-section { 
+            background: #2c2c2c; 
+            color: #ddd; 
+            padding: 4rem 1.5rem; 
+            text-align: center; 
+            margin-top: 4rem; 
+        }
+        .info-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
+            gap: 40px; 
+            max-width: 1000px; 
+            margin: 0 auto; 
+            text-align: left; 
+        }
+        .info-grid h3 { color: var(--accent); font-family: 'Playfair Display', serif; margin-top: 0; }
         .highlight { color: var(--accent); font-weight: bold; }
 
-        /* Modal Carrito */
-        #cartModal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; }
-        .modal-content { background: white; padding: 2rem; border-radius: 10px; width: 90%; max-width: 500px; max-height: 80vh; overflow-y: auto; }
-        .cart-item { display: flex; justify-content: space-between; margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 5px; align-items: center; }
-        .total { font-size: 1.5rem; font-weight: bold; text-align: right; margin-top: 1rem; color: var(--primary); }
-        .whatsapp-btn { display: block; width: 100%; background-color: #25D366; color: white; text-align: center; padding: 15px; text-decoration: none; font-weight: bold; border-radius: 5px; margin-top: 15px; font-size: 1.1rem; }
-        .close-modal { float: right; cursor: pointer; font-size: 1.5rem; }
+        /* --- Modal Carrito (Estilo Nuevo) --- */
+        #cartModal { 
+            display: none; 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            background: rgba(40, 40, 40, 0.6); /* Fondo oscuro suave */
+            backdrop-filter: blur(5px);
+            z-index: 2000; 
+            justify-content: center; 
+            align-items: center; 
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* Estilos Borrar */
-        .item-left { display: flex; align-items: center; gap: 10px; }
-        .delete-btn { cursor: pointer; color: #e74c3c; font-weight: bold; font-size: 1.2rem; padding: 0 5px; }
-        .delete-btn:hover { background-color: #ffebee; border-radius: 50%; }
+        .modal-content { 
+            background: white; 
+            padding: 2.5rem; 
+            border-radius: 20px; 
+            width: 90%; 
+            max-width: 550px; 
+            max-height: 85vh; 
+            overflow-y: auto; 
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            position: relative;
+        }
+        .modal-content h2 { 
+            font-family: 'Playfair Display', serif; 
+            color: var(--primary-dark); 
+            margin-top: 0; 
+            text-align: center;
+            border-bottom: 2px solid var(--secondary);
+            padding-bottom: 15px;
+        }
+
+        .cart-item { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 15px 0; 
+            border-bottom: 1px solid #f0f0f0; 
+            transition: background 0.2s;
+        }
+        .cart-item:hover { background: #fafafa; }
+        
+        .item-left { display: flex; align-items: center; gap: 15px; flex-grow: 1; }
+        
+        /* Botón de borrar estilizado */
+        .delete-btn { 
+            cursor: pointer; 
+            color: #ccc; 
+            font-size: 1.1rem; 
+            padding: 8px;
+            border-radius: 50%;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .delete-btn:hover { 
+            background-color: #fee; 
+            color: var(--danger); 
+            transform: scale(1.1);
+        }
+
+        .total { 
+            font-family: 'Playfair Display', serif; 
+            font-size: 1.8rem; 
+            font-weight: 700; 
+            text-align: right; 
+            margin-top: 1.5rem; 
+            color: var(--primary-dark); 
+        }
+        
+        .whatsapp-btn { 
+            display: block; 
+            width: 100%; 
+            background: linear-gradient(135deg, #25D366, #128C7E); 
+            color: white; 
+            text-align: center; 
+            padding: 16px; 
+            text-decoration: none; 
+            font-weight: bold; 
+            border-radius: 50px; 
+            margin-top: 20px; 
+            font-size: 1.1rem; 
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
+            transition: transform 0.2s;
+        }
+        .whatsapp-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(37, 211, 102, 0.5); }
+        
+        .empty-cart-btn {
+            margin-top: 15px; 
+            background: transparent; 
+            color: #999; 
+            border: 1px solid #eee; 
+            padding: 8px 15px; 
+            border-radius: 20px; 
+            cursor: pointer;
+            font-size: 0.85rem;
+            width: 100%;
+            transition: all 0.2s;
+        }
+        .empty-cart-btn:hover { background: #fee; color: var(--danger); border-color: #fcc; }
+
+        .close-modal { 
+            position: absolute; 
+            top: 20px; 
+            right: 25px; 
+            cursor: pointer; 
+            font-size: 2rem; 
+            color: #ccc;
+            line-height: 1;
+            transition: color 0.2s;
+        }
+        .close-modal:hover { color: var(--text-main); }
+
+        /* Meta tags ocultos */
+        .meta-tags { display: none; }
 
     </style>
     
@@ -112,34 +416,31 @@
 <body>
 
 <header>
-    <h1>📚 Catálogo de libros 2026</h1>
-    <br><br><br>
+    <h1>📚 Catálogo de Libros 2026</h1>
 </header>
 
 <div class="intro-box">
     <h2>Tu biblioteca definitiva de crecimiento interior</h2>
-    <p>Vivimos tiempos desafiantes. La ansiedad, la incertidumbre y el "ruido" externo pueden desconectarnos de nuestro centro. Pero, ¿y si tuvieras los manuales de instrucciones para navegar la vida con certeza?</p>
-    <p>Te presento la Colección 2026: obras curadas de los Maestros Ascendidos que no te dicen "qué" pensar, sino cómo conectar con tu propia Fuente Divina.</p>
+    <p>Vivimos tiempos desafiantes. La ansiedad y la incertidumbre pueden desconectarnos. Te presento la Colección 2026: obras curadas de los Maestros Ascendidos para navegar la vida con certeza y conectar con tu propia Fuente Divina.</p>
 </div>
 
 <div class="controls">
     <select id="categoryFilter" onchange="renderBooks()">
-        <option value="all">Ver Todas las Categorías</option>
-        <option value="Angeles">Ángeles y arcángeles</option>
-        <option value="SaintGermain">Saint Germain y la llama violeta</option>
-        <option value="Lemuria">LEMURIA y Astrología del Alma</option>
-        <option value="Sanacion">Sanación y espiritualidad práctica</option>
-        <option value="Alma">El viaje del alma: karma y ciclos</option>
-        <option value="Maestria">Maestría del ser y Ascensión</option>
+        <option value="all">✨ Ver Todas las Categorías</option>
+        <option value="Angeles">Ángeles y Arcángeles</option>
+        <option value="SaintGermain">Saint Germain y Llama Violeta</option>
+        <option value="Lemuria">Lemuria y Astrología del Alma</option>
+        <option value="Sanacion">Sanación y Espiritualidad</option>
+        <option value="Alma">El Viaje del Alma</option>
+        <option value="Maestria">Maestría del Ser y Ascensión</option>
     </select>
-    <input type="text" id="searchBox" placeholder="Buscar libro..." onkeyup="renderBooks()">
-    <button class="cart-btn" onclick="openCart()">🛒 Ver Carrito (<span id="cartCount">0</span>)</button>
+    <input type="text" id="searchBox" placeholder="🔍 Buscar por título..." onkeyup="renderBooks()">
+    <button class="cart-btn" onclick="openCart()">🛍️ Ver Carrito (<span id="cartCount">0</span>)</button>
 </div>
 
 <div class="container" id="bookContainer"></div>
 
 <div class="info-section">
-    <h2>Información de Pago y Envío</h2>
     <div class="info-grid">
         <div>
             <h3>💳 Formas de Pago</h3>
@@ -150,9 +451,9 @@
         <div>
             <h3>🚚 Envíos y Leyenda</h3>
             <p>A toda Colombia ($9.000 - $20.000 aprox).</p>
-            <p>Fecha límite pedido: <span class="highlight">16 de Enero 2026</span></p>
+            <p>Fecha límite: <span class="highlight">16 de Enero 2026</span></p>
             <p>🟢 <strong>Círculo:</strong> Entrega rápida.</p>
-            <p>⭐ <strong>Estrella:</strong> Promoción del mes.</p>
+            <p>⭐ <strong>Estrella:</strong> Promoción especial.</p>
         </div>
     </div>
 </div>
@@ -164,7 +465,7 @@
         <div id="cartItems"></div>
         <div class="total">Total: $<span id="cartTotal">0</span></div>
         <a href="#" id="whatsappLink" class="whatsapp-btn" target="_blank">📲 Enviar Pedido por WhatsApp</a>
-        <button onclick="clearCart()" style="margin-top:10px; background:#e74c3c; color:white; border:none; padding:5px 10px; border-radius:3px; cursor:pointer;">Vaciar Todo</button>
+        <button onclick="clearCart()" class="empty-cart-btn">Vaciar todo el carrito</button>
     </div>
 </div>
 
@@ -237,7 +538,7 @@
         { id: 63, title: "Enseñanzas de la Escuela de Misterios: Maitreya", author: "ECP", price: 63300, category: "Maestria", promo: false, rapido: true, pages: "000", desc: "Estas enseñanzas te ofrecen las claves iniciáticas para recuperar la conciencia del Edén y superar las pruebas más elevadas del alma de la mano del Señor Maitreya." },
         { id: 64, title: "Aventura del Espíritu 1: La Búsqueda Espiritual", author: "ECP", price: 118500, category: "Maestria", promo: true, rapido: false, pages: "000", desc: "Explora los misterios del universo, redescubre el propósito de tu alma y encuentra las respuestas que siempre has intuido pero no sabías dónde buscar." },
         { id: 65, title: "Aventura del Espíritu 2: Conoce a los Maestros", author: "ECP", price: 37000, category: "Maestria", promo: false, rapido: false, pages: "000", desc: "Conoce a los Maestros en un entorno celestial. Explora los misterios del universo y encuentra respuestas." },
-        { id: 66, title: "Aventura del Espíritu 2: La Llama Trina", author: "ECP", price: 54900, category: "Maestria", promo: false, rapido: false, pages: "000", desc: "Aprende a activar, equilibrar y expandir las tres plumas de Poder, Sabiduría y Amor que arden en el altar secreto de tu propio corazón." },
+        { id: 66, title: "Aventura del Espíritu 3: La Llama Trina", author: "ECP", price: 54900, category: "Maestria", promo: false, rapido: false, pages: "000", desc: "Aprende a activar, equilibrar y expandir las tres plumas de Poder, Sabiduría y Amor que arden en el altar secreto de tu propio corazón." },
         { id: 67, title: "La Palabra 7: Revelaciones Místicas", author: "ECP", price: 71000, category: "Maestria", promo: false, rapido: false, pages: "000", desc: "Instrucciones directas de Jesús sobre la transmutación del karma personal, el dominio del ser en un mundo en crisis y cómo encarnar tu propio Cristo interno." },
         { id: 68, title: "La Palabra 8: Profecías Finales", author: "ECP", price: 79500, category: "Maestria", promo: false, rapido: false, pages: "000", desc: "Descubre las profecías finales, las claves espirituales para la protección, el triunfo del alma y establecer una conexión inquebrantable con la Voluntad de Dios." }
     ];
@@ -284,10 +585,10 @@
                          class="book-cover"
                          onerror="this.src='https://via.placeholder.com/300x450.png?text=Sin+Foto'">
                 </div>
-                <div class="book-header">${catDisplay.toUpperCase()}</div>
                 <div class="book-body">
+                    <div class="book-category">${catDisplay}</div>
                     <h3 class="book-title">${book.title}</h3>
-                    <span class="book-author">Autor: ${book.author}</span>
+                    <span class="book-author">${book.author}</span>
                     <div class="pages-info">📄 ${book.pages} Páginas</div>
                     <p class="book-desc">${book.desc}</p>
                 </div>
@@ -307,7 +608,7 @@
         const btn = event.target;
         const originalText = btn.innerText;
         btn.innerText = "¡Listo!";
-        btn.style.background = "#2ecc71";
+        btn.style.background = "#81c784"; /* Verde pastel */
         setTimeout(() => { btn.innerText = originalText; btn.style.background = "var(--primary)"; }, 800);
     }
 
@@ -331,17 +632,24 @@
         let message = "Hola, me gustaría pedir los siguientes libros del Catálogo TSL 2026:%0A%0A";
 
         if(cart.length === 0) {
-            itemsDiv.innerHTML = "<p>El carrito está vacío.</p>";
+            itemsDiv.innerHTML = "<p style='text-align:center; color:#888;'>Tu carrito de luz está vacío.</p>";
         } else {
             cart.forEach((item, index) => {
                 total += item.price;
                 itemsDiv.innerHTML += `
                     <div class="cart-item">
                         <div class="item-left">
-                            <span class="delete-btn" onclick="removeFromCart(${index})" title="Eliminar">❌</span>
-                            <span>${item.title}</span>
+                            <span class="delete-btn" onclick="removeFromCart(${index})" title="Eliminar">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="3 6 5 6 21 6"></polyline>
+                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                </svg>
+                            </span>
+                            <div style="margin-left: 10px;">
+                                <div style="font-weight:600; font-size: 0.95rem;">${item.title}</div>
+                                <div style="font-size: 0.8rem; color: #888;">$${item.price.toLocaleString('es-CO')}</div>
+                            </div>
                         </div>
-                        <span>$${item.price.toLocaleString('es-CO')}</span>
                     </div>
                 `;
                 message += `- ${item.title} ($${item.price.toLocaleString('es-CO')})%0A`;
