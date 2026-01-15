@@ -164,6 +164,19 @@
         }
         .badge-star { background-color: var(--accent); color: white; }
         .badge-circle { background-color: var(--success); }
+        .badge-new { background-color: #7b1fa2; color: white; letter-spacing: 0.5px; }
+
+/* Estilo para el mensaje de "No lo tenemos" */
+.no-results {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 3rem;
+    font-size: 1.8rem;
+    color: #888;
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    opacity: 0.8;
+}
 
         /* Imagen */
         .book-cover-container {
@@ -539,67 +552,73 @@
         { id: 64, title: "Aventura del Espíritu 1: La Búsqueda Espiritual", author: "Elizabeth Clare Prophet", price: 118500, category: "Maestria", promo: true, rapido: false, pages: "272", desc: "Explora los misterios del universo, redescubre el propósito de tu alma y encuentra las respuestas que siempre has intuido pero no sabías dónde buscar." },
         { id: 65, title: "Aventura del Espíritu 2: Conoce a los Maestros", author: "Elizabeth Clare Prophet", price: 37000, category: "Maestria", promo: false, rapido: false, pages: "100", desc: "Conoce a los Maestros en un entorno celestial. Explora los misterios del universo y encuentra respuestas." },
         { id: 66, title: "Aventura del Espíritu 2: La Llama Trina", author: "Elizabeth Clare Prophet", price: 54900, category: "Maestria", promo: false, rapido: false, pages: "146", desc: "Aprende a activar, equilibrar y expandir las tres plumas de Poder, Sabiduría y Amor que arden en el altar secreto de tu propio corazón." },
-        { id: 67, title: "La Palabra 7: Revelaciones Místicas", author: "Elizabeth Clare Prophet", price: 71000, category: "Maestria", promo: false, rapido: false, pages: "341", desc: "Instrucciones directas de Jesús sobre la transmutación del karma personal, el dominio del ser en un mundo en crisis y cómo encarnar tu propio Cristo interno." },
-        { id: 68, title: "La Palabra 8: Profecías Finales", author: "Elizabeth Clare Prophet", price: 79500, category: "Maestria", promo: false, rapido: false, pages: "403", desc: "Descubre las profecías finales, las claves espirituales para la protección, el triunfo del alma y establecer una conexión inquebrantable con la Voluntad de Dios." }
+        { id: 67, title: "La Palabra 7: Revelaciones Místicas", author: "ECP", price: 71000, category: "Maestria", promo: false, rapido: false, novedad: true, pages: "000", desc: "Instrucciones directas de Jesús sobre la transmutación del karma personal, el dominio del ser en un mundo en crisis y cómo encarnar tu propio Cristo interno." },
+        { id: 68, title: "La Palabra 8: Profecías Finales", author: "ECP", price: 79500, category: "Maestria", promo: false, rapido: false, novedad: true, pages: "000", desc: "Descubre las profecías finales, las claves espirituales para la protección, el triunfo del alma y establecer una conexión inquebrantable con la Voluntad de Dios." }    
     ];
 
     let cart = [];
 
     // Renderizar libros con imagen automática
     function renderBooks() {
-        const container = document.getElementById('bookContainer');
-        const category = document.getElementById('categoryFilter').value;
-        const search = document.getElementById('searchBox').value.toLowerCase();
-        
-        container.innerHTML = '';
+    const container = document.getElementById('bookContainer');
+    const category = document.getElementById('categoryFilter').value;
+    const search = document.getElementById('searchBox').value.toLowerCase();
+    
+    container.innerHTML = '';
 
-        const filtered = books.filter(book => {
-            const matchCat = category === 'all' || book.category === category;
-            const matchSearch = book.title.toLowerCase().includes(search) || book.author.toLowerCase().includes(search);
-            return matchCat && matchSearch;
-        });
+    const filtered = books.filter(book => {
+        const matchCat = category === 'all' || book.category === category;
+        const matchSearch = book.title.toLowerCase().includes(search) || book.author.toLowerCase().includes(search);
+        return matchCat && matchSearch;
+    });
 
-        filtered.forEach(book => {
-            const card = document.createElement('div');
-            card.className = 'book-card';
-            
-            let badgesHTML = '<div class="badges">';
-            if(book.promo) badgesHTML += '<span class="badge badge-star">⭐ Promo</span>';
-            if(book.rapido) badgesHTML += '<span class="badge badge-circle">🟢 Rápido</span>';
-            badgesHTML += '</div>';
-
-            let catDisplay = book.category;
-            if(catDisplay === 'SaintGermain') catDisplay = 'Saint Germain';
-            if(catDisplay === 'Sanacion') catDisplay = 'Sanación';
-            if(catDisplay === 'Maestria') catDisplay = 'Maestría del Ser';
-            if(catDisplay === 'Angeles') catDisplay = 'Ángeles';
-            if(catDisplay === 'Alma') catDisplay = 'Viaje del Alma';
-            
-            // --- AQUÍ ESTÁ LA MAGIA DE LA FOTO ---
-            // Busca la foto 'ID.jpg' en la carpeta 'portadas'. Si no existe, pone una gris.
-            card.innerHTML = `
-                ${badgesHTML}
-                <div class="book-cover-container">
-                    <img src="portadas/${book.id}.jpg" 
-                         alt="${book.title}" 
-                         class="book-cover"
-                         onerror="this.src='https://via.placeholder.com/300x450.png?text=Sin+Foto'">
-                </div>
-                <div class="book-body">
-                    <div class="book-category">${catDisplay}</div>
-                    <h3 class="book-title">${book.title}</h3>
-                    <span class="book-author">${book.author}</span>
-                    <div class="pages-info">📄 ${book.pages} Páginas</div>
-                    <p class="book-desc">${book.desc}</p>
-                </div>
-                <div class="book-footer">
-                    <span class="price">$${book.price.toLocaleString('es-CO')}</span>
-                    <button class="add-btn" onclick="addToCart(${book.id})">Agregar</button>
-                </div>
-            `;
-            container.appendChild(card);
-        });
+    // --- AQUÍ ESTÁ EL LETRERO NUEVO ---
+    if (filtered.length === 0) {
+        container.innerHTML = '<div class="no-results">Por ahora no lo tenemos</div>';
+        return;
     }
+
+    filtered.forEach(book => {
+        const card = document.createElement('div');
+        card.className = 'book-card';
+        
+        let badgesHTML = '<div class="badges">';
+        if(book.promo) badgesHTML += '<span class="badge badge-star">⭐ Promo</span>';
+        if(book.rapido) badgesHTML += '<span class="badge badge-circle">🟢 Rápido</span>';
+        // --- AQUÍ ESTÁ LA ETIQUETA NOVEDAD ---
+        if(book.novedad) badgesHTML += '<span class="badge badge-new">Novedad</span>';
+        badgesHTML += '</div>';
+
+        let catDisplay = book.category;
+        if(catDisplay === 'SaintGermain') catDisplay = 'Saint Germain';
+        if(catDisplay === 'Sanacion') catDisplay = 'Sanación';
+        if(catDisplay === 'Maestria') catDisplay = 'Maestría del Ser';
+        if(catDisplay === 'Angeles') catDisplay = 'Ángeles';
+        if(catDisplay === 'Alma') catDisplay = 'Viaje del Alma';
+        
+        card.innerHTML = `
+            ${badgesHTML}
+            <div class="book-cover-container">
+                <img src="portadas/${book.id}.jpg" 
+                     alt="${book.title}" 
+                     class="book-cover"
+                     onerror="this.src='https://via.placeholder.com/300x450.png?text=Sin+Foto'">
+            </div>
+            <div class="book-body">
+                <div class="book-category">${catDisplay}</div>
+                <h3 class="book-title">${book.title}</h3>
+                <span class="book-author">${book.author}</span>
+                <div class="pages-info">📄 ${book.pages} Páginas</div>
+                <p class="book-desc">${book.desc}</p>
+            </div>
+            <div class="book-footer">
+                <span class="price">$${book.price.toLocaleString('es-CO')}</span>
+                <button class="add-btn" onclick="addToCart(${book.id})">Agregar</button>
+            </div>
+        `;
+        container.appendChild(card);
+    });
+}
 
     function addToCart(id) {
         const book = books.find(b => b.id === id);
